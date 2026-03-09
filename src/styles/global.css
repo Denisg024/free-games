@@ -1,0 +1,79 @@
+body{
+font-family: Arial;
+margin:0;
+background:#111;
+color:white;
+font-family: 'Inter', sans-serif;
+
+}
+
+.navbar{
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#222;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:20px;
+}
+
+.card{
+background:#1e1e1e;
+padding:10px;
+border-radius:10px;
+text-align:center;
+}
+
+.card img{
+width:100%;
+border-radius:10px;
+}
+
+button{
+padding:8px 15px;
+background:#00bcd4;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+:root {
+  --bg-dark: #0b0e11;
+  --accent: #00ff88;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-dark);
+  color: white;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Grid de juegos responsive */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Estilo de la Card */
+.game-card {
+  background: #1a1d21;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #222;
+  transition: 0.3s;
+}
+
+.game-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-5px);
+}
+
+.game-card img { width: 100%; height: 150px; object-fit: cover; }
+.card-info { padding: 15px; }
+.genre-badge { background: #333; color: var(--accent); padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; }
