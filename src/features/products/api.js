@@ -1,47 +1,26 @@
-// api.js
-import { httpClient } from "../../services/httpClient";
+import axios from 'axios';
 
-export const getGames = async (searchParams) => {
-  let endpoint = "/games";
-  const params = new URLSearchParams();
+const API_URL = 'https://www.freetogame.com/api';
 
-  // Extraer parámetros
-  const platform = searchParams.get("platform");
-  const category = searchParams.get("category");
-  const sortBy = searchParams.get("sort-by");
-  const search = searchParams.get("search");
-
-  // Agregar parámetros a la URL (si el backend los soporta)
-  if (platform) params.append("platform", platform);
-  if (category) params.append("category", category);
-  if (sortBy) params.append("sort-by", sortBy);
-
-  const queryString = params.toString();
-  
-  // Llamada a la API
-  const data = await httpClient(
-    endpoint + (queryString ? `?${queryString}` : "")
-  );
-
-  // Filtro LOCAL para búsqueda por nombre (si el backend no lo soporta)
-  if (search) {
-    return data.filter((game) =>
-      game.title.toLowerCase().includes(search.toLowerCase())
-    );
+// Función asíncrona para obtener juegos con filtros
+export const fetchGames = async (filters = {}) => {
+  try {
+    // Construimos los query params dinámicamente
+    const params = new URLSearchParams(filters).toString();
+    const response = await axios.get(`${API_URL}/games?${params}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener juegos:", error);
+    throw new Error("No se pudo conectar con la API de juegos.");
   }
- // 2. Filtro LOCAL para categoría (AGREGAR ESTO)
-  if (category) {
-    return data.filter((game) =>
-      game.genre.toLowerCase() === category.toLowerCase() ||
-      game.category?.toLowerCase() === category.toLowerCase()
-    );
-  }
-  // 3. Filtro LOCAL para plataforma (AGREGAR ESTO)
-  if (platform) {
-    return data.filter((game) =>
-      game.platform?.toLowerCase() === platform.toLowerCase()
-    );
-  }
+};
 
-  return data;
+// Función para obtener detalle por ID
+export const fetchGameById = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/game?id=${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Juego no encontrado.");
+  }
 };

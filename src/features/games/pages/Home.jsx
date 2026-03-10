@@ -1,52 +1,113 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Filter, Gamepad2 } from "lucide-react";
-import { getGames } from "../api";
+import { Filter, Gamepad2, Search } from "lucide-react";
 import "../styles/Home.css";
 
 const Home = () => {
+
   const [searchParams, setSearchParams] = useSearchParams();
+
   const [games, setGames] = useState([]);
+  const [filteredGames, setFilteredGames] = useState([]);
+
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const gamesPerPage = 12;
+
+  const categoryParam = searchParams.get("category") || "";
+  const platformParam = searchParams.get("platform") || "";
+
+  // CARGAR JUEGOS
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      setError(null);
 
-      console.log("🔍 Parámetros de búsqueda:", searchParams.toString()); // LOG 1
+    const fetchGames = async () => {
+
+      setLoading(true);
 
       try {
-        const data = await getGames(new URLSearchParams(searchParams));
-        console.log("📦 Datos recibidos:", data); // LOG 2
-        setGames(data.slice(0, 12));
-      } catch (err) {
-        console.error("❌ Error al cargar juegos:", err);
-        setError("Hubo un error al cargar los juegos.");
-        setGames([]);
-      } finally {
-        setLoading(false);
+
+        let url = "https://www.freetogame.com/api/games";
+
+        if (platformParam && categoryParam) {
+          url = `https://www.freetogame.com/api/filter?platform=${platformParam}&category=${categoryParam}`;
+        } 
+        else if (platformParam) {
+          url = `https://www.freetogame.com/api/games?platform=${platformParam}`;
+        } 
+        else if (categoryParam) {
+          url = `https://www.freetogame.com/api/games?category=${categoryParam}`;
+        }
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        setGames(data);
+        setFilteredGames(data);
+
+      } catch (error) {
+
+        console.error("Error cargando juegos", error);
+
       }
+
+      setLoading(false);
+
     };
 
-    loadData();
-  }, [searchParams]); // Dependencia correcta
+    fetchGames();
 
+  }, [platformParam, categoryParam]);
+
+  // BUSQUEDA
+  useEffect(() => {
+
+    const results = games.filter((game) =>
+      game.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    setFilteredGames(results);
+    setCurrentPage(1);
+
+  }, [searchQuery, games]);
+
+  // PAGINACIÓN
+  const indexOfLastGame = currentPage * gamesPerPage;
+  const indexOfFirstGame = indexOfLastGame - gamesPerPage;
+
+  const currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
+
+  const totalPages = Math.ceil(filteredGames.length / gamesPerPage);
+
+  // CAMBIAR FILTROS
   const handleFilterChange = (key, value) => {
-    const newParams = new URLSearchParams(searchParams);
+
+    const params = new URLSearchParams(searchParams);
 
     if (value) {
-      newParams.set(key, value);
+      params.set(key, value);
     } else {
-      newParams.delete(key);
+      params.delete(key);
     }
 
-    setSearchParams(newParams);
+    setSearchParams(params);
+  };
+
+  // LIMPIAR FILTROS
+  const clearFilters = () => {
+
+    setSearchParams({});
+    setSearchQuery("");
+
   };
 
   return (
+
     <main className="home-container">
+
       <header className="home-header">
         <div className="title-wrapper">
           <Gamepad2 color="#00ff88" size={40} />
@@ -55,15 +116,31 @@ const Home = () => {
       </header>
 
       <section className="filters-section">
+
         <div className="filters-label">
-          <Filter size={16} /> FILTROS
+          <Filter size={16}/> FILTROS
         </div>
 
+        {/* BUSCADOR */}
+
+        <div className="search-wrapper">
+          <Search size={18}/>
+          <input
+            type="text"
+            placeholder="Buscar juegos..."
+            value={searchQuery}
+            onChange={(e)=>setSearchQuery(e.target.value)}
+          />
+        </div>
+
+        {/* FILTROS */}
+
         <div className="select-group">
+
           <select
             className="custom-select"
-            value={searchParams.get("platform") || ""}
-            onChange={(e) => handleFilterChange("platform", e.target.value)}
+            value={platformParam}
+            onChange={(e)=>handleFilterChange("platform",e.target.value)}
           >
             <option value="">Plataforma</option>
             <option value="pc">PC</option>
@@ -72,51 +149,82 @@ const Home = () => {
 
           <select
             className="custom-select"
-            value={searchParams.get("category") || ""}
-            onChange={(e) => handleFilterChange("category", e.target.value)}
+            value={categoryParam}
+            onChange={(e)=>handleFilterChange("category",e.target.value)}
           >
             <option value="">Categoría</option>
             <option value="mmorpg">MMORPG</option>
             <option value="shooter">Shooter</option>
             <option value="strategy">Strategy</option>
           </select>
+
         </div>
+
+        {(searchQuery || categoryParam || platformParam) && (
+
+          <button onClick={clearFilters} className="clear-filters-btn">
+            Limpiar filtros
+          </button>
+
+        )}
+
       </section>
 
+      {/* GRID */}
+
       <div className="games-grid">
+
         {loading ? (
-          <div className="loading-state">
-            <p>Cargando juegos...</p>
-          </div>
-        ) : error ? (
-          <div className="error-state">
-            <p>{error}</p>
-          </div>
-        ) : games.length === 0 ? (
-          <div className="empty-state">
-            <Gamepad2 size={48} color="#ccc" />
-            <p>No se encontraron juegos con estos filtros.</p>
-          </div>
+
+          <p>Cargando juegos...</p>
+
+        ) : currentGames.length === 0 ? (
+
+          <p>No se encontraron juegos</p>
+
         ) : (
-          games.map((game) => (
+
+          currentGames.map((game)=>(
             <div key={game.id} className="game-card">
-              <img 
-                src={game.thumbnail} 
-                alt={game.title} 
-                loading="lazy" 
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "https://via.placeholder.com/300x200?text=No+Image";
-                }}
-              />
+
+              <img src={game.thumbnail} alt={game.title}/>
+
               <div className="card-info">
                 <h3>{game.title}</h3>
                 <span className="genre-badge">{game.genre}</span>
               </div>
+
             </div>
           ))
+
         )}
+
       </div>
+
+      {/* PAGINACIÓN */}
+
+      <div className="pagination">
+
+        <button
+          disabled={currentPage === 1}
+          onClick={()=>setCurrentPage(currentPage-1)}
+        >
+          Anterior
+        </button>
+
+        <span>
+          Página {currentPage} de {totalPages}
+        </span>
+
+        <button
+          disabled={currentPage === totalPages}
+          onClick={()=>setCurrentPage(currentPage+1)}
+        >
+          Siguiente
+        </button>
+
+      </div>
+
     </main>
   );
 };
