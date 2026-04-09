@@ -1,152 +1,197 @@
-/* src/styles/Navbar.css */
-
-/* Variables para mantener consistencia de colores (Gaming Dark) */
+/* VARIABLES */
 :root {
-  --bg-navbar: #111418;       /* Fondo muy oscuro, casi negro */
-  --bg-search: #1f2329;       /* Fondo de la barra de búsqueda */
-  --color-text-main: #eeeeee; /* Texto principal (blanco suave) */
-  --color-text-muted: #a0a0a0;/* Texto secundario (gris) */
-  --color-accent-neon: #00ff88;/* Verde neón brillante */
+  --bg-navbar: #111418;
+  --bg-search: #1f2329;
+  --color-text-main: #eeeeee;
+  --color-text-muted: #a0a0a0;
+  --color-accent-neon: #00ff88;
   --shadow-neon: 0 0 10px rgba(0, 255, 136, 0.7), 0 0 20px rgba(0, 255, 136, 0.5);
-  
+
   --nav-height: 70px;
   --transition-speed: 0.3s;
 }
 
-/* Estilos Generales del Navbar */
+/* NAVBAR */
 .navbar {
   background-color: var(--bg-navbar);
   height: var(--nav-height);
   width: 100%;
   display: flex;
   align-items: center;
-  position: fixed; /* Mantiene el navbar arriba al hacer scroll */
+  position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000; /* Asegura que esté por encima de todo */
-  border-bottom: 1px solid #222; /* Línea sutil inferior */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Tipografía limpia */
+  z-index: 1000;
+  border-bottom: 1px solid #222;
 }
 
-/* Contenedor principal con padding */
+/* CONTENEDOR */
 .navbar-container {
-  max-width: 1400px; /* Ancho máximo para pantallas grandes */
+  max-width: 1400px;
   width: 90%;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between; /* Separa las 3 secciones */
+  justify-content: space-between;
   align-items: center;
 }
 
-/* --- SECCIÓN 1: LOGO --- */
+/* LOGO */
 .navbar-logo {
   display: flex;
   align-items: center;
   text-decoration: none;
   gap: 10px;
-  transition: transform var(--transition-speed) ease;
-}
-
-.navbar-logo:hover {
-  transform: scale(1.03); /* Pequeño efecto al pasar el mouse */
 }
 
 .logo-icon {
   color: var(--color-accent-neon);
-  filter: drop-shadow(var(--shadow-neon)); /* Efecto neón en el icono */
+  filter: drop-shadow(var(--shadow-neon));
 }
 
 .logo-text {
   color: var(--color-text-main);
   font-size: 24px;
-  font-weight: 800; /* Texto grueso */
-  letter-spacing: -0.5px;
+  font-weight: 800;
 }
 
 .logo-text-accent {
   color: var(--color-accent-neon);
-  filter: drop-shadow(var(--shadow-neon)); /* Efecto neón en el texto */
+  filter: drop-shadow(var(--shadow-neon));
 }
 
-/* --- SECCIÓN 2: BARRA DE BÚSQUEDA --- */
+/* SEARCH */
 .navbar-search-wrapper {
   position: relative;
-  width: 400px; /* Ancho ajustable */
+  width: 400px;
 }
 
 .search-icon {
   position: absolute;
   left: 15px;
   top: 50%;
-  transform: translateY(-50%); /* Centra verticalmente */
+  transform: translateY(-50%);
   color: var(--color-text-muted);
-  pointer-events: none; /* El icono no interfiere con el clic */
 }
 
 .navbar-search-input {
   width: 100%;
   background-color: var(--bg-search);
-  border: 1px solid transparent; /* Borde invisible por defecto */
+  border: none;
   color: var(--color-text-main);
-  padding: 12px 15px 12px 45px; /* Padding extra a la izquierda para el icono */
-  border-radius: 8px; /* Bordes redondeados */
-  font-size: 15px;
-  transition: all var(--transition-speed) ease;
+  padding: 12px 15px 12px 45px;
+  border-radius: 8px;
 }
 
-.navbar-search-input::placeholder {
-  color: var(--color-text-muted);
-}
-
-/* Efecto al hacer clic en la búsqueda */
 .navbar-search-input:focus {
   outline: none;
-  background-color: #252a31;
-  border-color: rgba(0, 255, 136, 0.5); /* Borde neón sutil */
-  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+  border: 1px solid rgba(0, 255, 136, 0.5);
 }
 
-/* --- SECCIÓN 3: ENLACES --- */
+/* LINKS */
 .navbar-links {
   display: flex;
-  gap: 25px; /* Espacio entre enlaces */
+  gap: 25px;
   align-items: center;
 }
 
 .nav-link {
   color: var(--color-text-muted);
   text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  transition: color var(--transition-speed) ease;
 }
 
-/* Efecto hover en los enlaces (se vuelven blancos) */
 .nav-link:hover {
   color: var(--color-text-main);
 }
 
-/* --- RESPONSIVE (Punto clave para tu nota) --- */
+/* USER */
+.user-name {
+  margin-left: 15px;
+  color: #00ffcc;
+  font-weight: bold;
+}
+
+.logout-btn {
+  margin-left: 10px;
+  padding: 6px 12px;
+  background-color: #ff4d4d;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #e60000;
+}
+
+/* MENU ICON (HAMBURGUESA) */
+.menu-icon {
+  display: none;
+  cursor: pointer;
+  color: white;
+}
+
+/* CONTENIDO AGRUPADO */
+.navbar-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* TABLET */
 @media (max-width: 900px) {
   .navbar-search-wrapper {
-    width: 250px; /* Búsqueda más pequeña en tablets */
-  }
-  .navbar-links {
-    gap: 15px;
+    width: 250px;
   }
 }
 
+/* 🔥 MOBILE PRO */
 @media (max-width: 768px) {
-  .navbar-container {
-    flex-direction: column; /* Apila elementos en móvil */
-    height: auto;
-    padding: 15px 0;
+
+  .menu-icon {
+    display: block;
   }
-  .navbar {
-    height: auto;
+
+  .navbar-content {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #111418;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    display: none;
   }
+
+  .navbar-content.active {
+    display: flex;
+    animation: slideDown 0.3s ease;
+  }
+
   .navbar-search-wrapper {
     width: 90%;
-    margin: 15px 0;
+  }
+
+  .navbar-links {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-link {
+    font-size: 18px;
+  }
+}
+
+/* ANIMACIÓN */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
