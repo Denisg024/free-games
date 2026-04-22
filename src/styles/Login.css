@@ -146,3 +146,29 @@
     opacity: 1;
   }
 }
+
+.top-buttons {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 15px;
+  z-index: 10;
+}
+
+.top-buttons button {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: #00ffc3;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: 0.3s;
+}
+
+.top-buttons button:hover {
+  background: #00ffc3;
+  color: black;
+}

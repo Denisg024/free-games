@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../Context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ParticlesBackground from "../components/ParticlesBackground";
+import { motion } from "framer-motion";
 import "../styles/Login.css";
 
 export default function Login() {
@@ -13,10 +14,10 @@ export default function Login() {
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
 
-  // 🔐 Si ya hay sesión, redirige
+  // 🔐 Redirección si ya hay sesión
   useEffect(() => {
     if (token) navigate("/");
-  }, [token]);
+  }, [token, navigate]);
 
   // ✅ Validaciones
   const validate = () => {
@@ -63,8 +64,32 @@ export default function Login() {
       {/* 🌌 Fondo con partículas */}
       <ParticlesBackground />
 
+      <div className="top-buttons">
+  <button onClick={() => navigate("/games")}>
+    🎮 Ver Juegos
+  </button>
+
+  <button onClick={() => navigate("/animations")}>
+    ✨ Animaciones
+  </button>
+</div>
+
       <div className="login-container">
-        <div className="login-box">
+        {/* 🎬 TARJETA ANIMADA */}
+        <motion.div
+          className="login-box"
+          initial={{
+            opacity: 0,
+            y: 60,
+            boxShadow: "0px 0px 0px rgba(0,0,0,0)",
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            boxShadow: "0px 10px 25px rgba(0,0,0,0.3)",
+          }}
+          transition={{ duration: 0.8 }}
+        >
           <h2 className="login-title">🎮 FreeGames</h2>
 
           {error && <p className="error-text">{error}</p>}
@@ -93,14 +118,24 @@ export default function Login() {
             </span>
           </div>
 
-          <button className="login-btn" onClick={handleLogin}>
+          {/* 🔥 BOTÓN LOGIN ANIMADO */}
+          <motion.button
+            className="login-btn"
+            onClick={handleLogin}
+            whileTap={{ scale: 0.9 }}
+          >
             Ingresar
-          </button>
+          </motion.button>
 
-          <button className="register-btn" onClick={handleRegister}>
+          {/* 🔥 BOTÓN REGISTRO ANIMADO */}
+          <motion.button
+            className="register-btn"
+            onClick={handleRegister}
+            whileTap={{ scale: 0.9 }}
+          >
             Registrarse
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
     </>
   );

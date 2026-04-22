@@ -1,0 +1,124 @@
+/* FONDO */
+.animaciones-container {
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  color: white;
+  position: relative;
+}
+
+/* HEADER */
+.anim-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.anim-title {
+  font-size: 32px;
+  color: #00ffc3;
+  margin-bottom: 10px;
+}
+
+.anim-subtitle {
+  color: #94a3b8;
+}
+
+/* GRID */
+.anim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  width: 100%;
+  max-width: 900px;
+}
+
+/* CARDS */
+.anim-card {
+  background: rgba(30, 30, 47, 0.6);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 20px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+/* BOTÓN */
+.anim-button {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #00ffc3, #00c6ff);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+}
+
+/* DRAG */
+.drag-box {
+  width: 80px;
+  height: 80px;
+  margin: auto;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+
+/* LOADER */
+.loader-container {
+  width: 100%;
+  height: 8px;
+  background: #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.loader-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00ffc3, #00c6ff);
+}
+
+/* BOTÓN VOLVER */
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  color: #00ffc3;
+  cursor: pointer;
+}
+/* CONTENEDOR DE CADA BLOQUE */
+.anim-section {
+  width: 100%;
+  max-width: 700px;
+  padding: 25px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ÚLTIMO SIN LÍNEA */
+.anim-section:last-child {
+  border-bottom: none;
+}
+
+/* TÍTULOS */
+.anim-section h2 {
+  margin-bottom: 10px;
+  color: #00ffc3;
+}
+
+/* ESPACIADO INTERNO */
+.anim-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
